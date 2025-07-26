@@ -15,33 +15,67 @@
                 @if (Auth::user()->role == 'superadmin')
                     <li class="menu-header">Hak Akses</li>
                     <li class="{{ Request::is('hakakses') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('hakakses') }}"><i class="fas fa-user-shield"></i> <span>Hak
-                                Akses</span></a>
+                        <a class="nav-link" href="{{ url('hakakses') }}"><i class="fas fa-user-shield"></i> <span>Data
+                                User</span></a>
+                    </li>
+                    <li class="{{ Request::is('data-pegawai') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ url('data-pegawai') }}"><i class="ion ion-person-stalker"></i>
+                            <span>Data
+                                Pegawai</span></a>
+                    </li>
+                    <li class="{{ Request::is('kode-klasifikasi') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ url('kode-klasifikasi') }}"><i class="ion ion-filing"></i> <span>Kode
+                                Klasifikasi</span></a>
                     </li>
                 @endif
 
                 <!--Main Menu -->
                 <li class="menu-header">Main Menu</li>
-                <li class="{{ Request::is('menu/surat-masuk') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ url('menu/surat-masuk') }}"><i class="ion-archive"></i> <span>Surat
-                            Masuk</span></a>
-                </li>
+                @if (Auth::user()->role !== 'user')
+                    <li class="{{ Request::is('menu/surat-masuk') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ url('menu/surat-masuk') }}"><i class="ion ion-archive"></i> <span>Surat
+                                Masuk</span></a>
+                    </li>
+                @endif
                 <li class="{{ Request::is('menu/surat-disposisi') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ url('menu/surat-disposisi') }}"><i class="ion-document-text"></i>
-                        <span>Surat
-                            Disposisi</span></a>
+                    <a class="nav-link" href="{{ url('menu/surat-disposisi') }}"><i class="ion ion-document-text"></i>
+                        <span>Surat Disposisi</span></a>
+                </li>
+                <li class="{{ Request::is('master/surat-keluar') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('master/surat-keluar') }}"><i class="ion ion-android-upload"></i>
+                        <span>Data Surat Keluar</span></a>
                 </li>
 
-                <li class="dropdown">
-                    <a href="#" class="nav-link has-dropdown"><i class="ion-ios-paperplane"></i><span>Surat Keluar</span></a>
-                    <ul class="dropdown-menu">
-                        <li class="{{ Request::is('menu/surat-keluar-perintah') }}">
-                            <a  href="{{ url('menu/surat-keluar-perintah') }}">
-                                Surat Perintah</a>
-                        </li>
-                        {{-- <li><a class="nav-link" href="index.html">Ecommerce Dashboard</a></li> --}}
-                    </ul>
-                </li>
+                @if (Auth::user()->role == 'superadmin' || Auth::user()->role == 'user')
+                    <li
+                        class="dropdown {{ Request::is(['surat/perintah', 'surat/rekomendasi', 'surat/undangan', 'surat/keterangan', 'surat/pengumuman']) ? 'active' : '' }}">
+                        <a href="#" class="nav-link has-dropdown"><i class="ion ion-ios-paperplane"></i><span>Form
+                                Surat
+                                Keluar</span></a>
+                        <ul class="dropdown-menu">
+                            <li class="{{ Request::is('surat/perintah') ? 'active' : '' }}">
+                                <a href="{{ url('surat/perintah') }}">
+                                    Surat Perintah</a>
+                            </li>
+                            <li class="{{ Request::is('surat/undangan') ? 'active' : '' }}">
+                                <a href="{{ url('surat/undangan') }}">
+                                    Surat Undangan</a>
+                            </li>
+                            <li class="{{ Request::is('surat/keterangan') ? 'active' : '' }}">
+                                <a href="{{ url('surat/keterangan') }}">
+                                    Surat Keterangan</a>
+                            </li>
+                            <li class="{{ Request::is('surat/rekomendasi') ? 'active' : '' }}">
+                                <a href="{{ url('surat/rekomendasi') }}">
+                                    Surat Rekomendasi</a>
+                            </li>
+                            {{-- <li class="{{ Request::is('surat/pengumuman') ? 'active' : '' }}">
+                                <a href="{{ url('surat/pengumuman') }}">
+                                    Surat Pengumuman</a>
+                            </li> --}}
+                        </ul>
+                    </li>
+                @endif
 
                 <!-- profile ganti password -->
                 <li class="menu-header">Profile</li>
@@ -54,50 +88,6 @@
                     <a class="nav-link" href="{{ url('profile/change-password') }}"><i class="fas fa-key"></i> <span>Ganti
                             Password</span></a>
                 </li>
-
-                {{-- <li class="menu-header">Starter</li>
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('blank-page') }}"><i class="far fa-square"></i> <span>Blank Page</span></a>
-            </li> --}}
-
-
-                {{-- <li class="menu-header">Examples</li>
-            <li class="{{ Request::is('table-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('table-example') }}"><i class="fas fa-table"></i> <span>Table Example</span></a>
-            </li>
-            <li class="{{ Request::is('clock-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('clock-example') }}"><i class="fas fa-clock"></i> <span>Clock Example</span></a>
-            </li>
-            <li class="{{ Request::is('chart-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('chart-example') }}"><i class="fas fa-chart-bar"></i> <span>Chart Example</span></a>
-            </li>
-            <li class="{{ Request::is('form-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('form-example') }}"><i class="fas fa-file-alt"></i> <span>Form Example</span></a>
-            </li>
-            <li class="{{ Request::is('map-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('map-example') }}"><i class="fas fa-map"></i> <span>Map Example</span></a>
-            </li>
-            <li class="{{ Request::is('calendar-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('calendar-example') }}"><i class="fas fa-calendar"></i> <span>Calendar Example</span></a>
-            </li>
-            <li class="{{ Request::is('gallery-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('gallery-example') }}"><i class="fas fa-images"></i> <span>Gallery Example</span></a>
-            </li>
-            <li class="{{ Request::is('todo-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('todo-example') }}"><i class="fas fa-list"></i> <span>Todo Example</span></a>
-            </li>
-            <li class="{{ Request::is('contact-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('contact-example') }}"><i class="fas fa-envelope"></i> <span>Contact Example</span></a>
-            </li>
-            <li class="{{ Request::is('faq-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('faq-example') }}"><i class="fas fa-question-circle"></i> <span>FAQ Example</span></a>
-            </li>
-            <li class="{{ Request::is('news-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('news-example') }}"><i class="fas fa-newspaper"></i> <span>News Example</span></a>
-            </li>
-            <li class="{{ Request::is('about-example') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('about-example') }}"><i class="fas fa-info-circle"></i> <span>About Example</span></a>
-            </li> --}}
             </ul>
         </aside>
     </div>

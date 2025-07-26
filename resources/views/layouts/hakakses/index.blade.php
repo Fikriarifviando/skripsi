@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Hak Akses')
-@section('page-title', 'Hak Akses')
+@section('title', 'Data User')
+@section('page-title', 'Data User')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -12,14 +12,6 @@
     <section class="section">
         <div class="section-body">
             <div class="card">
-                {{-- <div class="card-header">
-                    
-                        {{-- <div class="col-md-6">
-                            <a href="{{ route('hakakses.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Tambah Baru
-                            </a>
-                        </div>
-                </div> --}}
                 <div class="col-md-6 py-2 d-flex align-items-center">
                     <a href="{{ route('hakakses.create') }}" class="btn btn-success mr-3 d-flex align-items-center"
                         role="button">
@@ -35,8 +27,6 @@
                             placeholder="Cari Berdasarkan Nama atau Role">
                     </div>
                 </div>
-
-
                 <div class="card-body">
                     <div class="table-responsive table-striped">
                         <table class="table" id="datatable">

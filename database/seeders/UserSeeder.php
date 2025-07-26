@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -11,13 +12,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Hapus data existing
-        User::truncate();
+        DB::table('users')->delete();
 
         // Buat user default
         User::factory()->create([
             'name' => 'Superadmin',
             'email' => 'superadmin@example.com',
-            'password' => Hash::make('SuperAdmin2024!'),
+            'password' => Hash::make('SuperAdmin'),
             'role' => 'superadmin'
         ]);
 
@@ -29,6 +30,6 @@ class UserSeeder extends Seeder
         ]);
 
         // Tambahkan user random
-        User::factory(50)->create();
+        User::factory(10)->create();
     }
 }

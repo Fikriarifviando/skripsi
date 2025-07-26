@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="{{ asset('library/ionicons201/css/ionicons.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('library/izitoast/dist/css/iziToast.min.css') }}">
-    
+
     <!-- Custom CSS Files -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
@@ -60,6 +60,34 @@
                         <div class="section-header">
                             <h1>@yield('page-title')</h1>
                         </div>
+
+                        {{-- Flash Messages (Dinonaktifkan karena akan diganti dengan iziToast) --}}
+                        {{-- @if (session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+
+                        @if (session('warning'))
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                {{ session('warning') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif --}}
                     </section>
                     @yield('content')
                 </div>
@@ -91,8 +119,62 @@
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
 
+    <!-- Flash message auto-close setelah 3 detik (Bisa dinonaktifkan karena sudah menggunakan iziToast) -->
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.alert-dismissible').alert('close');
+            }, 30000); // 3 detik
+        });
+    </script>
+
+    <!-- Script untuk iziToast Global -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Konfigurasi Global iziToast
+            iziToast.settings({
+                position: 'topRight',
+                transitionIn: 'fadeInDown',
+                transitionOut: 'fadeOutUp',
+                closeOnClick: true,
+                pauseOnHover: true,
+                timeout: 5000
+            });
+
+            // Cek session flash
+            @if (session('success'))
+                iziToast.success({
+                    title: 'Sukses',
+                    message: '{{ session('success') }}'
+                });
+            @endif
+
+            @if (session('warning'))
+                iziToast.warning({
+                    title: 'Peringatan',
+                    message: '{{ session('warning') }}'
+                });
+            @endif
+
+            @if (session('error'))
+                iziToast.error({
+                    title: 'Gagal',
+                    message: '{{ session('error') }}'
+                });
+            @endif
+
+            @if (session('status'))
+                iziToast.info({
+                    title: 'Informasi',
+                    message: '{{ session('status') }}'
+                });
+            @endif
+        });
+    </script>
+
     <!-- Additional JS (if any) -->
     @stack('scripts')
+
 </body>
 
 </html>

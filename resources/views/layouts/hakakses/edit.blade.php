@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Data Hak Akses')
-@section('page-title', 'Edit Data Hak Akses')
+@section('title', 'Edit Data user')
+@section('page-title', 'Edit Data user')
 
 
 @push('style')

@@ -9,12 +9,10 @@
                 <div class="col-12 py-5">
 
                 </div>
-
                 <div class="card shadow-lg card-primary">
                     <div class="card-header text-center">
                         <h4>{{ __('Login') }}</h4>
                     </div>
-
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
@@ -42,42 +40,17 @@
                                         </span>
                                     </div>
                                 </div>
-
-
                                 @error('password')
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-
-                            {{-- <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" name="remember" class="custom-control-input" id="remember"
-                                        {{ old('remember') ? 'checked' : '' }}>
-                                    <label class="custom-control-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div> --}}
-
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-block">
                                     {{ __('Login') }}
                                 </button>
                             </div>
-
-                            {{-- <div class="text-center">
-                            @if (Route::has('password.request'))
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('Forgot Your Password?') }}
-                                </a>
-                            @endif
-                            <br>
-                            <a class="btn btn-link" href="{{ route('register') }}">
-                                {{ __('Belum Punya Akun? Register') }}
-                            </a>
-                        </div> --}}
                         </form>
                     </div>
                 </div>

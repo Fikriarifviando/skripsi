@@ -8,44 +8,30 @@ use Yajra\DataTables\Facades\DataTables;
 
 class HakaksesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    // public function index(Request $request)
-    // {
-    //     $search = $request->get('pencarian');
-    //     if ($search) {
-    //         $data['hakakses'] = hakakses::where('id', 'like', "%{$search}%")
-    //             ->orWhere('role', 'like', "%{$search}%")
-    //             ->orWhere('name', 'like', "%{$search}%")
-    //             ->get();
-    //     } else {
-    //         $data['hakakses'] = hakakses::all();
-    //     }
-    //     return view('layouts.hakakses.index', $data);
-    // }
 
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Hakakses::select('*');
+            $data = Hakakses::where('id', '!=', auth()->id())
+                ->select('*');
 
             return DataTables::of($data)
-            ->filter(function ($query) use ($request) {
-                if ($request->has('pencarian')) {
-                    $query->where('id', 'like', "%{$request->pencarian}%")
-                        ->orWhere('role', 'like', "%{$request->pencarian}%")
-                        ->orWhere('name', 'like', "%{$request->pencarian}%");
-                }
-            })
+                ->filter(function ($query) use ($request) {
+                    if ($request->has('pencarian')) {
+                        $query->where(function ($q) use ($request) {
+                            $q->where('id','like',"%{$request->pencarian}%")
+                                ->orWhere('role','like',"%{$request->pencarian}%")
+                                ->orWhere('name', 'like', "%{$request->pencarian}%");
+                        });
+                    }
+                })
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $actionBtn = '
-                    <a href="' . route('hakakses.edit', $row->id) . '" class="btn btn-primary">Edit</a>
-                    <button onclick="confirmDelete(\'' . route('hakakses.delete',
-                        $row->id
-                    ) . '\')" class="btn btn-danger">Delete</button>
-                ';
+                <a href="' . route('hakakses.edit', $row->id) . '" class="btn btn-primary">Edit</a>
+                <button onclick="confirmDelete(\'' . route('hakakses.delete', $row->id)
+                 . '\')" class="btn btn-danger">Delete</button>
+            ';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -68,7 +54,6 @@ class HakaksesController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -77,28 +62,21 @@ class HakaksesController extends Controller
         ]);
 
         try {
-            // Buat user baru
             $hakakses = new Hakakses();
             $hakakses->name = $validatedData['name'];
             $hakakses->email = $validatedData['email'];
             $hakakses->password = bcrypt($validatedData['password']);
-
-            // Set role, default ke 'user' jika tidak ditentukan
             $hakakses->role = $request->input('role', 'user');
-
             $hakakses->save();
-
-            // Redirect dengan pesan sukses
             return redirect()->route('hakakses.index')
-            ->with('success', 'User berhasil ditambahkan');
+                ->with('success', 'User berhasil ditambahkan');
         } catch (\Exception $e) {
-            // Tangani error
             return redirect()->back()
                 ->with('error', 'Gagal menambahkan user: ' . $e->getMessage())
                 ->withInput();
         }
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -127,7 +105,7 @@ class HakaksesController extends Controller
         $hakakses = hakakses::find($id);
         $hakakses->role = $request->role;
         $hakakses->save();
-    return redirect()->route('hakakses.index')->with('success', 'Update Berhasil');
+        return redirect()->route('hakakses.index')->with('success', 'Update Berhasil');
     }
 
     /**
@@ -161,4 +139,7 @@ class HakaksesController extends Controller
                 ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
         }
     }
+
+   
+    
 }

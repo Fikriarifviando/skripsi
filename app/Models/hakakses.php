@@ -22,6 +22,10 @@ class Hakakses extends Model
     protected $attributes = [
         'role' => 'user',
     ];
+    public function scopeExcludeCurrentUser($query)
+    {
+        return $query->where('id', '!=', auth()->id());
+    }
 
    
 }
